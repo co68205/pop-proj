@@ -36,7 +36,7 @@ var town = new ol.layer.Vector({
         url: 'js/town.json',
         format: new ol.format.GeoJSON()
     }),
-    style: function(f) {
+    style: function (f) {
         var fStyle = layerYellow.clone();
         fStyle.getText().setText(f.get('COUNTYNAME') + f.get('TOWNNAME'));
         return fStyle;
@@ -73,6 +73,8 @@ var map = new ol.Map({
 });
 map.addControl(sidebar);
 
+var birthGroup = 'high';
+var selectedTown = '';
 map.on('singleclick', function (evt) {
     clickedCoordinate = evt.coordinate;
     var featureClicked = false;
@@ -80,16 +82,53 @@ map.on('singleclick', function (evt) {
         if (false === featureClicked) {
             featureClicked = true;
             var p = feature.getProperties();
-            var selectedTown = p.COUNTYNAME + p.TOWNNAME;
-            $('#sidebar-title').html(selectedTown);
-            pyramidChart.dataSource.url = 'csv/' + encodeURI(selectedTown) + '/high.csv';
-            pyramidChart.dataSource.load();
-            popChart.dataSource.url = 'csv/' + encodeURI(selectedTown) + '/years.csv';
-            popChart.dataSource.load();
+            selectedTown = p.COUNTYNAME + p.TOWNNAME;
+            loadCharts();
             map.getView().fit(feature.getGeometry());
         }
     });
     featureClicked = false;
+});
 
+function loadCharts() {
+    var uriTown = encodeURI(selectedTown);
+    $('#sidebar-title').html(selectedTown);
+    $('#book-town').html(selectedTown);
+    var birthGroupLabel = '';
+    switch (birthGroup) {
+        case 'high':
+            birthGroupLabel = '高出生預估';
+            break;
+        case 'medium':
+            birthGroupLabel = '中出生預估';
+            break;
+        case 'low':
+            birthGroupLabel = '低出生預估';
+            break;
+    }
+    $('#birth-town').html(birthGroupLabel);
+
+    pyramidChart.dataSource.url = 'csv/' + uriTown + '/' + birthGroup + '.csv';
+    pyramidChart.dataSource.load();
+    popChart.dataSource.url = 'csv/' + uriTown + '/years.csv';
+    popChart.dataSource.load();
     sidebar.open('home');
+}
+
+$('#btnHigh').click(function () {
+    birthGroup = 'high';
+    loadCharts();
+    return false;
+});
+
+$('#btnMedium').click(function () {
+    birthGroup = 'medium';
+    loadCharts();
+    return false;
+});
+
+$('#btnLow').click(function () {
+    birthGroup = 'low';
+    loadCharts();
+    return false;
 });

@@ -55,7 +55,6 @@ am4core.ready(function () {
     popSeriesFemale.tooltipText = "[bold]{dateX}人口[/]\n[font-size: 20]總計: {total}\n男: {male}\n女: {female}";
     popSeriesFemale.name = "女";
 
-    popChart.dataSource.url = "csv/%E8%87%BA%E5%8D%97%E5%B8%82%E5%85%AD%E7%94%B2%E5%8D%80/years.csv";
     popChart.dataSource.parser = new am4core.CSVParser();
     popChart.dataSource.parser.options.useColumnNames = true;
     popChart.dataSource.parser.options.numberFields = ["male", "female", "total"];
@@ -90,7 +89,6 @@ am4core.ready(function () {
     pyramidChart.cursor = new am4charts.XYCursor();
     pyramidChart.cursor.behavior = "none";
 
-    pyramidChart.dataSource.url = "csv/%E8%87%BA%E5%8D%97%E5%B8%82%E5%85%AD%E7%94%B2%E5%8D%80/high.csv";
     pyramidChart.dataSource.parser = new am4core.CSVParser();
     pyramidChart.dataSource.parser.options.useColumnNames = true;
     pyramidChart.dataSource.parser.options.numberFields = ["male", "female", "total"];
