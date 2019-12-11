@@ -142,6 +142,7 @@ am4core.ready(function () {
     var sourceData = [];
 
     var pyramidXAxisMale = pyramidChart.xAxes.push(new am4charts.ValueAxis());
+    pyramidXAxisMale.strictMinMax = true;
 
     var maleRange = pyramidXAxisMale.axisRanges.create();
     maleRange.label.text = "男";
